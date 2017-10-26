@@ -60,3 +60,37 @@ const promise = new Promise(resolve => {
  * promise.then(x => console.log(x));
  */
 Rx.Observable.fromPromise(promise).subscribe(x => console.log(x));
+
+// Interval
+Rx.Observable.interval(1000)
+	.take(10)
+	.map(x => x * 2)
+	.subscribe(x => console.log(x));
+
+// Double subscribe switched to mergeMap
+/**
+Rx.Observable.of('Hello')
+	.subscribe(x => {
+		Rx.Observable.of(x + ' Everyone')
+			.subscribe(x => console.log(x));
+	});
+*/
+Rx.Observable.of('Hello')
+	.mergeMap(x => Rx.Observable.of(x + ' Everybody'))
+	.subscribe(x => console.log(x));
+
+function getUser(username) {
+	return $.ajax({
+		url: 'https://api.github.com/users/' + username,
+		dataType: 'jsonp'
+	}).promise();
+}
+
+Rx.Observable.fromEvent($("#input"), "keyup")
+	.map(e => e.target.value)
+	// same as map but return a observable and not a value
+	.switchMap(v => Rx.Observable.fromPromise(getUser(v)))
+	.map(x => x.data)
+	.subscribe(v => {
+		$("#result").text(v.blog);
+	});
