@@ -4,7 +4,7 @@
   "description": "Boilerplate for building RxJS applications",
   "main": "app.js",
   "scripts": {
-    "start": "live-server --port=8000"
+    "start": "webpack --config webpack.config.js -w | live-server --port=8000"
   },
   "author": "Brad Traversy",
   "license": "ISC",
@@ -12,7 +12,8 @@
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
     "babel-preset-env": "^1.6.1",
-    "live-server": "^1.2.0"
+    "live-server": "^1.2.0",
+    "webpack": "^3.8.1"
   },
   "dependencies": {
     "jquery": "^3.2.1",
