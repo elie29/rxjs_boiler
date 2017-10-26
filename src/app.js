@@ -31,18 +31,20 @@ Rx.Observable.from(map).subscribe(
 );
 
 // From scratch
-new Rx.Observable(subject => {
-	subject.next('Creating Observable');
-	subject.next('Hello world');
-	timeOut(subject);
-	// subject.error(new Error('An error has occured...')); // this will cancel setTimeout
+// new Rx.Observable same as below taking an observer interface
+Rx.Observable.create(observer => {
+	observer.next('Creating Observable');
+	observer.next('Hello world');
+	timeOut(observer);
+	// observer.error(new Error('An error has occured...')); // this will cancel setTimeout
 })
 .catch(err => Rx.Observable.of(err))
-.subscribe(
-	x => console.log(x),
-	error => console.log(error),
-	complete => console.log('completed 3')
-);
+// Another way to pass an observer by using next, error and complete object
+.subscribe({
+	next: x =>console.log(x),
+	error: e => console.log(e),
+	complete: () => console.log('completed 3')
+});
 
 function timeOut(subject) {
     setTimeout(() => {
