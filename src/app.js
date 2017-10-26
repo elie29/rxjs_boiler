@@ -35,7 +35,10 @@ new Rx.Observable(subject => {
 	subject.next('Creating Observable');
 	subject.next('Hello world');
 	timeOut(subject);
-}).subscribe(
+	// subject.error(new Error('An error has occured...')); // this will cancel setTimeout
+})
+.catch(err => Rx.Observable.of(err))
+.subscribe(
 	x => console.log(x),
 	error => console.log(error),
 	complete => console.log('completed 3')
@@ -47,3 +50,13 @@ function timeOut(subject) {
         subject.complete(); // To end the stream
     }, 3000);
 }
+
+// From Promise
+const promise = new Promise(resolve => {
+	setTimeout(() => resolve("Hello from my promise"), 6000);
+});
+
+/**
+ * promise.then(x => console.log(x));
+ */
+Rx.Observable.fromPromise(promise).subscribe(x => console.log(x));
