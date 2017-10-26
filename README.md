@@ -12,8 +12,11 @@ Boilerplate for building RxJS applications in a Webpack environment
 
 This uses RxJS version 5 - [https://github.com/ReactiveX/rxjs](https://github.com/ReactiveX/rxjs)
 
-### Usage
+### Pre Installation
 
+```sh
+$ npm cache verify
+```
 
 ### Installation
 
@@ -25,22 +28,8 @@ Install dependencies (Webpack, Babel, RxJS 5, jQuery)
 $ npm install
 ```
 
-### Compile
-To compile all js to dist/app.bundle.js
-
-```sh
-$ webpack
-```
-To watch run
-```sh
-$ webpack -w
-```
-
-### Run
-Install live-server globally
-```sh
-$ npm install live-server -g
-```
+### Compile and Run
+To compile all js to dist/app.bundle.js and run the server
 
 ```sh
 $ npm start
