@@ -41,16 +41,16 @@ Rx.Observable.create(observer => {
 .catch(err => Rx.Observable.of(err))
 // Another way to pass an observer by using next, error and complete object
 .subscribe({
-	next: x =>console.log(x),
+	next: x => console.log(x),
 	error: e => console.log(e),
 	complete: () => console.log('completed 3')
 });
 
-function timeOut(subject) {
-    setTimeout(() => {
-        subject.next('Yet another value!');
-        subject.complete(); // To end the stream
-    }, 3000);
+function timeOut(observer) {
+	setTimeout(() => {
+			observer.next('Yet another value!');
+			observer.complete(); // To end the stream
+	}, 3000);
 }
 
 // From Promise
@@ -90,9 +90,25 @@ function getUser(username) {
 
 Rx.Observable.fromEvent($("#input"), "keyup")
 	.map(e => e.target.value)
-	// same as map but return a observable and not a value
+	// same as map but return an observable and not a value
 	.switchMap(v => Rx.Observable.fromPromise(getUser(v)))
 	.map(x => x.data)
 	.subscribe(v => {
 		$("#result").text(v.blog);
 	});
+
+var subject = new Rx.Subject();
+
+/**
+ * Here the subject is acting like a data producer: As Observable
+ * because it is being subscribed to
+ */
+subject.subscribe(v => console.log('consumer A: ' + v)); // first consumer
+subject.subscribe(v => console.log('consumer B: ' + v)); // second consumer
+
+// Create a source of the data, which in our case is an observable
+var observable = Rx.Observable.from([0, 1, 2]); // Another producer
+
+// Here the same subject acts as a data consumer because it
+// can subscribe to another observable
+observable.subscribe(subject);
