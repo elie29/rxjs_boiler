@@ -66,7 +66,7 @@ Rx.Observable.fromPromise(promise).subscribe(x => console.log(x));
 // Interval
 Rx.Observable.interval(1000)
 	.take(10)
-	.map(x => x * 2)
+	.map(x => x * 2) // return the same observable by changing the value
 	.subscribe(x => console.log(x));
 
 // Double subscribe switched to mergeMap
@@ -78,7 +78,7 @@ Rx.Observable.of('Hello')
 	});
 */
 Rx.Observable.of('Hello')
-	.mergeMap(x => Rx.Observable.of(x + ' Everybody'))
+	.mergeMap(x => Rx.Observable.of(x + ' Everybody')) // return another observable
 	.subscribe(x => console.log(x));
 
 function getUser(username) {
@@ -90,12 +90,27 @@ function getUser(username) {
 
 Rx.Observable.fromEvent($("#input"), "keyup")
 	.map(e => e.target.value)
-	// same as Mergemap but it cancells previous calls
+	// same as mergeMap but it cancels previous calls
 	.switchMap(v => Rx.Observable.fromPromise(getUser(v)))
 	.map(x => x.data)
 	.subscribe(v => {
 		$("#result").text(v.blog);
 	});
+
+/**
+ * Subttle difference between mergeMap and switchMap
+ *  mergeMap: merge all data, no element is ever lost.
+ * 	switchMap: When outer element became avail­able,
+ * 		switchMap switches over to outer and unsub­scribes
+ * 		from its inner stream.
+ */
+Rx.Observable.interval(1000).take(2)
+	.mergeMap(x => Rx.Observable.interval(500).take(3).map(y => `mergeMap -> ${x}:${y}`))
+	.subscribe(d => console.log(d));
+
+Rx.Observable.interval(1000).take(2)
+	.switchMap(x => Rx.Observable.interval(500).take(3).map(y => `switchMap -> ${x}:${y}`))
+	.subscribe(d => console.log(d));
 
 var subject = new Rx.Subject();
 
