@@ -90,7 +90,7 @@ function getUser(username) {
 
 Rx.Observable.fromEvent($("#input"), "keyup")
 	.map(e => e.target.value)
-	// same as map but return an observable and not a value
+	// same as Mergemap but it cancells previous calls
 	.switchMap(v => Rx.Observable.fromPromise(getUser(v)))
 	.map(x => x.data)
 	.subscribe(v => {
