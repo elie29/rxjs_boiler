@@ -101,7 +101,7 @@ Rx.Observable.fromEvent($("#input"), "keyup")
  * Subttle difference between mergeMap and switchMap
  *  mergeMap: merge all data, no element is ever lost.
  * 	switchMap: When outer element became avail­able,
- * 		switchMap switches over to outer and unsub­scribes
+ * 		switchMap switches over to outer and unsubscribes
  * 		from its inner stream.
  */
 Rx.Observable.interval(1000).take(2)
