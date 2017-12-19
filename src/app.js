@@ -121,9 +121,12 @@ var subject = new Rx.Subject();
 subject.subscribe(v => console.log('consumer A: ' + v)); // first consumer
 subject.subscribe(v => console.log('consumer B: ' + v)); // second consumer
 
+// Subject is also a producer
+subject.next(10);
+
 // Create a source of the data, which in our case is an observable
 var observable = Rx.Observable.from([0, 1, 2]); // Another producer
 
 // Here the same subject acts as a data consumer because it
-// can subscribe to another observable
+// can subscribe to another observable, but when is completed, consumers are cancelled
 observable.subscribe(subject);
